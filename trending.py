@@ -1,6 +1,6 @@
 import os, requests, datetime
 
-API_KEY = os.getenv("API_KEY")
+API_KEY = os.getenv("SENTIMENT_API_KEY")
 url = "https://api.santiment.net/graphql"
 
 query = """
@@ -14,7 +14,7 @@ query = """
 }
 """
 
-headers = {"Authorization": f"Apikey {API_KEY}"}
+headers = {"Authorization": f"Apikey {SENTIMENT_API_KEY}"}
 response = requests.post(url, json={"query": query}, headers=headers)
 
 print("RAW RESPONSE:", response.text)  # <-- DEBUG CETAK ISI RESPON
