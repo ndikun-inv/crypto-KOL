@@ -22,3 +22,11 @@ jobs:
         env:
           SENTIMENT_API_KEY: ${{ secrets.SENTIMENT_API_KEY }}
         run: python trending.py
+
+            - name: Commit results
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add TRENDING.md
+          git commit -m "Update trending data" || echo "No changes to commit"
+          git push
