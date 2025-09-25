@@ -3,15 +3,13 @@ import requests
 
 API_KEY = os.getenv("SENTIMENT_API_KEY")
 
-url = "https://api.lunarcrush.com/graphql"
+url = "https://api.santiment.net/graphql"
 
 query = """
 {
   getTrendingWords {
     word
     score
-    volume
-    social_volume
   }
 }
 """
@@ -27,9 +25,10 @@ if response.status_code == 200:
     data = response.json()
     print("RAW RESPONSE:", data)
 
-    # kalau mau cuma list kata trending
-    words = data["data"]["getTrendingWords"]
-    for w in words:
-        print(f"{w['word']} - score: {w['score']} - volume: {w['volume']}")
+    if "data" in data and "getTrendingWords" in data["data"]:
+        for item in data["data"]["getTrendingWords"]:
+            print(f"{item['word']} - score: {item['score']}")
+    else:
+        print("No data returned, check query or API key.")
 else:
     print("Error:", response.status_code, response.text)
