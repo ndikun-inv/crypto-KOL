@@ -3,25 +3,32 @@ name: Crypto Trends
 on:
   schedule:
     - cron: "0 * * * *"   # jalan tiap jam
-  workflow_dispatch:       # bisa run manual juga
+  workflow_dispatch:       # bisa run manual
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
-      - name: Install deps
+          python-version: '3.11'
+
+      - name: Install dependencies
         run: pip install requests
+
       - name: Run script
+        env:
+          SENTIMENT_API_KEY: ${{ secrets.SENTIMENT_API_KEY }}
         run: python trending.py
+
       - name: Commit results
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git add trending.csv
-          git commit -m "Update trends"
+          git add trending.csv || echo "No CSV to add"
+          git commit -m "Update trends [skip ci]" || echo "No changes to commit"
           git push
