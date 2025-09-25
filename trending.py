@@ -23,12 +23,15 @@ response = requests.post(url, json={"query": query}, headers=headers)
 
 if response.status_code == 200:
     data = response.json()
-    print("RAW RESPONSE:", data)
 
+    lines = ["# 🔥 Crypto Trending Words (Santiment)\n"]
     if "data" in data and "getTrendingWords" in data["data"]:
         for item in data["data"]["getTrendingWords"]:
-            print(f"{item['word']} - score: {item['score']}")
+            lines.append(f"- **{item['word']}** → score: {item['score']}")
     else:
-        print("No data returned, check query or API key.")
+        lines.append("⚠️ No data returned.")
+
+    with open("TRENDING.md", "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
 else:
     print("Error:", response.status_code, response.text)
