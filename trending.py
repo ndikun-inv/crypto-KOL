@@ -2,7 +2,7 @@ import requests
 from datetime import datetime, timedelta, timezone
 import csv
 
-API_KEY = "MASUKKAN_API_KEY_DISINI"
+API_KEY = "API_KEY"
 url = "https://api.lunarcrush.com/v2?data=market&key=" + API_KEY
 
 res = requests.get(url)
